@@ -1,7 +1,7 @@
-d66eae9b3ce91d0d32bf41a58a440f58 *DESCRIPTION
+2583d3bb26a6fba21ffe135957f62f5b *DESCRIPTION
 3f5daad5e4d1a4e0f46c36a7bff17015 *LICENSE
 aaa93b222779000dd9ead3c44cd2d3ab *NAMESPACE
-c450c0b2d5c29900b5c029c9c14b1f5a *NEWS.md
+c5902fbf6216748f76d51b0a79e22f84 *NEWS.md
 5acf0ee96039ce02835d067de55ef1a1 *R/ascii_tables.R
 433a92c998c60725dc1b998a36d444ed *R/cast_variables.R
 d253b4f46fe7c931551be94cc6d750a1 *R/diffdf.R
@@ -13,11 +13,11 @@ b0951374232417e5c58e17220a016efb *R/issues.R
 80af8d436026534c5b46a329ca344fa7 *R/misc_functions.R
 b7410353809f1098a22b88d72b104146 *R/print.R
 e31751bb5afabf9a25ad66c4d4f60fee *R/sysdata.rda
-5965ab7dd7e0cf80a8e6c7ab43af0152 *README.md
+5db37c78ac246fe564f9774785180145 *README.md
 48174eb2cc367a5d5470dd93df46dbe9 *build/vignette.rds
 24aab4be7c42d6ccd9f88232552ab03a *inst/doc/diffdf-basic.R
 f14de8bdd8f83cfde2b613025d16769d *inst/doc/diffdf-basic.Rmd
-97744678a65b33e6497219298f8f0e9e *inst/doc/diffdf-basic.html
+95e876fdb409273b80d3c98f9906ae8a *inst/doc/diffdf-basic.html
 ad09dbb3b254a54592b47ad5cf0bf4b5 *man/as_ascii_table.Rd
 225abe371f9ea66790cacd5284a24e64 *man/as_cropped_char.Rd
 5853ea3e14aa7719707019999deae4cd *man/cast_variables.Rd
