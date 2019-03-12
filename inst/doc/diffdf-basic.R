@@ -8,7 +8,10 @@ knitr::opts_chunk$set(
 library(diffdf)
 
 LENGTH = 30
+
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(12334)
+
 test_data <- tibble::tibble( 
     ID          = 1:LENGTH,
     GROUP1      = rep( c(1,2) , each = LENGTH/2),

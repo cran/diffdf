@@ -12,7 +12,7 @@
 
 <meta name="author" content="Craig Gower &amp; Kieran Martin" />
 
-<meta name="date" content="2019-01-09" />
+<meta name="date" content="2019-03-12" />
 
 <title>Introduction to diffdf</title>
 
@@ -92,7 +92,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Introduction to diffdf</h1>
 <h4 class="author"><em>Craig Gower &amp; Kieran Martin</em></h4>
-<h4 class="date"><em>2019-01-09</em></h4>
+<h4 class="date"><em>2019-03-12</em></h4>
 
 
 
@@ -103,7 +103,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(diffdf)
 
 LENGTH =<span class="st"> </span><span class="dv">30</span>
+
+<span class="kw">suppressWarnings</span>(<span class="kw">RNGversion</span>(<span class="st">&quot;3.5.0&quot;</span>))
 <span class="kw">set.seed</span>(<span class="dv">12334</span>)
+
 test_data &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">tibble</span>( 
     <span class="dt">ID          =</span> <span class="dv">1</span><span class="op">:</span>LENGTH,
     <span class="dt">GROUP1      =</span> <span class="kw">rep</span>( <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>) , <span class="dt">each =</span> LENGTH<span class="op">/</span><span class="dv">2</span>),
@@ -132,7 +135,7 @@ test_data
 <span class="co">#&gt;  8     8      1      8      44 F      2020-07-21 1998-08-22 05:23:24</span>
 <span class="co">#&gt;  9     9      1      9      51 F      1967-05-25 2003-01-03 22:09:29</span>
 <span class="co">#&gt; 10    10      1     10      40 M      2044-03-11 1996-04-19 11:10:12</span>
-<span class="co">#&gt; # ... with 20 more rows, and 4 more variables: CONTINUOUS &lt;dbl&gt;,</span>
+<span class="co">#&gt; # … with 20 more rows, and 4 more variables: CONTINUOUS &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   CATEGORICAL &lt;fct&gt;, LOGICAL &lt;lgl&gt;, CHARACTER &lt;chr&gt;</span>
 
 <span class="kw">diffdf</span>( test_data , test_data)
