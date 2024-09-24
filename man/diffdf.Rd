@@ -13,7 +13,9 @@ diffdf(
   strict_factor = TRUE,
   file = NULL,
   tolerance = sqrt(.Machine$double.eps),
-  scale = NULL
+  scale = NULL,
+  check_column_order = FALSE,
+  check_df_class = FALSE
 )
 }
 \arguments{
@@ -21,80 +23,95 @@ diffdf(
 
 \item{compare}{comparison dataframe}
 
-\item{keys}{vector of variables (as strings) that defines a unique row in the base and compare dataframes}
+\item{keys}{vector of variables (as strings) that defines a unique row in
+the base and compare dataframes}
 
 \item{suppress_warnings}{Do you want to suppress warnings? (logical)}
 
-\item{strict_numeric}{Flag for strict numeric to numeric comparisons (default = TRUE). If False diffdf will cast integer to double where required for comparisons. Note that variables specified in the keys will never be casted.}
+\item{strict_numeric}{Flag for strict numeric to numeric comparisons
+(default = TRUE). If False diffdf will cast integer to double where
+required for comparisons. Note that variables specified in the keys
+will never be casted.}
 
-\item{strict_factor}{Flag for strict factor to character comparisons (default = TRUE). If False diffdf will cast factors to characters where required for comparisons. Note that variables specified in the keys will never be casted.}
+\item{strict_factor}{Flag for strict factor to character comparisons
+(default = TRUE). If False diffdf will cast factors to characters where
+required for comparisons. Note that variables specified in the keys will
+never be casted.}
 
-\item{file}{Location and name of a text file to output the results to. Setting to NULL will cause no file to be produced.}
+\item{file}{Location and name of a text file to output the results to.
+Setting to NULL will cause no file to be produced.}
 
-\item{tolerance}{Set tolerance for numeric comparisons. Note that comparisons fail if (x-y)/scale > tolerance.}
+\item{tolerance}{Set tolerance for numeric comparisons. Note that
+comparisons fail if (x-y)/scale > tolerance.}
 
-\item{scale}{Set scale for numeric comparisons. Note that comparisons fail if (x-y)/scale > tolerance. Setting as NULL is a slightly more efficient version of scale = 1.}
+\item{scale}{Set scale for numeric comparisons. Note that comparisons fail
+if (x-y)/scale > tolerance. Setting as NULL is a slightly more efficient
+version of scale = 1.}
+
+\item{check_column_order}{Should the column ordering be checked? (logical)}
+
+\item{check_df_class}{Do you want to check for differences in the class
+between \code{base} and \code{compare}? (logical)}
 }
 \description{
 Compares 2 dataframes and outputs any differences.
 }
 \examples{
-x <- subset( iris,  -Species)
-x[1,2] <- 5
-COMPARE <- diffdf( iris, x)
-print( COMPARE )
-print( COMPARE , "Sepal.Length" )
+x <- subset(iris, -Species)
+x[1, 2] <- 5
+COMPARE <- diffdf(iris, x)
+print(COMPARE)
 
 #### Sample data frames
 
 DF1 <- data.frame(
-    id = c(1,2,3,4,5,6),
+    id = c(1, 2, 3, 4, 5, 6),
     v1 = letters[1:6],
-    v2 = c(NA , NA , 1 , 2 , 3 , NA)
+    v2 = c(NA, NA, 1, 2, 3, NA)
 )
 
 DF2 <- data.frame(
-    id = c(1,2,3,4,5,7),
+    id = c(1, 2, 3, 4, 5, 7),
     v1 = letters[1:6],
-    v2 = c(NA , NA , 1 , 2 , NA , NA),
-    v3 = c(NA , NA , 1 , 2 , NA , 4)
+    v2 = c(NA, NA, 1, 2, NA, NA),
+    v3 = c(NA, NA, 1, 2, NA, 4)
 )
 
-diffdf(DF1 , DF1 , keys = "id")
+diffdf(DF1, DF1, keys = "id")
 
 # We can control matching with scale/location for example:
 
 DF1 <- data.frame(
-    id = c(1,2,3,4,5,6),
+    id = c(1, 2, 3, 4, 5, 6),
     v1 = letters[1:6],
-    v2 = c(1,2,3,4,5,6)
+    v2 = c(1, 2, 3, 4, 5, 6)
 )
 DF2 <- data.frame(
-    id = c(1,2,3,4,5,6),
+    id = c(1, 2, 3, 4, 5, 6),
     v1 = letters[1:6],
-    v2 = c(1.1,2,3,4,5,6)
+    v2 = c(1.1, 2, 3, 4, 5, 6)
 )
 
-diffdf(DF1 , DF2 , keys = "id")
-diffdf(DF1 , DF2 , keys = "id", tolerance = 0.2)
-diffdf(DF1 , DF2 , keys = "id", scale = 10, tolerance = 0.2)
- 
+diffdf(DF1, DF2, keys = "id")
+diffdf(DF1, DF2, keys = "id", tolerance = 0.2)
+diffdf(DF1, DF2, keys = "id", scale = 10, tolerance = 0.2)
+
 # We can use strict_factor to compare factors with characters for example:
 
 DF1 <- data.frame(
-    id = c(1,2,3,4,5,6),
+    id = c(1, 2, 3, 4, 5, 6),
     v1 = letters[1:6],
-    v2 = c(NA , NA , 1 , 2 , 3 , NA), 
+    v2 = c(NA, NA, 1, 2, 3, NA),
     stringsAsFactors = FALSE
 )
 
 DF2 <- data.frame(
-    id = c(1,2,3,4,5,6),
+    id = c(1, 2, 3, 4, 5, 6),
     v1 = letters[1:6],
-    v2 = c(NA , NA , 1 , 2 , 3 , NA)
+    v2 = c(NA, NA, 1, 2, 3, NA)
 )
 
-diffdf(DF1 , DF2 , keys = "id", strict_factor = TRUE)
-diffdf(DF1 , DF2 , keys = "id", strict_factor = FALSE)
- 
+diffdf(DF1, DF2, keys = "id", strict_factor = TRUE)
+diffdf(DF1, DF2, keys = "id", strict_factor = FALSE)
+
 }

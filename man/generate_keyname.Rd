@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_keyname.R
 \name{generate_keyname}
 \alias{generate_keyname}
-\title{generate_keyname}
+\title{Generate unique key name}
 \usage{
 generate_keyname(
   BASE,
@@ -20,3 +20,4 @@ generate_keyname(
 \description{
 Function to generate a name for the keys if not provided
 }
+\keyword{internal}

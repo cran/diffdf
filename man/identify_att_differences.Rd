@@ -2,7 +2,7 @@
 % Please edit documentation in R/identify.R
 \name{identify_att_differences}
 \alias{identify_att_differences}
-\title{identify_att_differences}
+\title{Identify differences in attributes}
 \usage{
 identify_att_differences(BASE, COMP, exclude_cols = "")
 }
@@ -16,3 +16,4 @@ identify_att_differences(BASE, COMP, exclude_cols = "")
 \description{
 Identifies any attribute differences between two data frames
 }
+\keyword{internal}

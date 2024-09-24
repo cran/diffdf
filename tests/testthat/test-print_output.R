@@ -1,89 +1,119 @@
 
 
-context("Testing print functionality")
+test_that("Print output is maintained", {
 
-
-# devtools::load_all()
-# library(dplyr)
-# library(stringr)
-# library(devtools)
-# library(testthat)
-# source( "./tests/testthat/helper-create_test_data.R")
-
-
-runme <- function(x){
-    x2 <- diffdf(x[[1]] , x[[2]] , suppress_warnings = T)
-    print(x2 , as_string = TRUE)
-}
-
-RES <- map( list_of_comparisons , runme)
-
-
-### Add additional examples that make use of keys
-
-x <- diffdf(
-    list_of_comparisons[["everything"]][[1]] ,
-    list_of_comparisons[["everything"]][[2]] ,
-    keys = "ID",
-    suppress_warnings = T
-)
-RES[[ "With 1 key"]] <- print(x , as_string = TRUE)
-
-
-x <- diffdf(
-    list_of_comparisons[["everything"]][[1]] ,
-    list_of_comparisons[["everything"]][[2]] ,
-    keys = c("ID" , "GROUP1"),
-    suppress_warnings = T
-)
-RES[["With 2 keys"]] <- print(x , as_string = TRUE)
-
-
-
-
-SET_GOLD <- FALSE
-
-if ( SET_GOLD ){
-    TESTING_print_msg <- RES
-    devtools::use_data( TESTING_print_msg , internal = TRUE , overwrite = TRUE)
-} else {
-    for ( i in seq_along(RES) ){
-        expect_equal( 
-            RES[[i]] , 
-            TESTING_print_msg[[i]] , 
-            info = paste0( "Reference = " , i , " - " , names(RES)[i])
+    runme <- function(id) {
+        x2 <- diffdf(
+            list_of_comparisons[[id]][[1]],
+            list_of_comparisons[[id]][[2]],
+            suppress_warnings = TRUE
         )
+        print(x2)
     }
-}
+
+    expect_snapshot(runme("Identical"))
+    expect_snapshot(runme("Identical 2"))
+    expect_snapshot(runme("Different Values"))
+    expect_snapshot(runme("Different Values 2"))
+    expect_snapshot(runme("Different attributes"))
+    expect_snapshot(runme("Different attributes 2"))
+    expect_snapshot(runme("Different Levels"))
+    expect_snapshot(runme("Different Levels 2"))
+    expect_snapshot(runme("Different Class"))
+    expect_snapshot(runme("Different Class 2"))
+    expect_snapshot(runme("Different Modes"))
+    expect_snapshot(runme("Different Modes 2"))
+    expect_snapshot(runme("Missing Columns"))
+    expect_snapshot(runme("Missing Columns 2"))
+    expect_snapshot(runme("Missing Rows"))
+    expect_snapshot(runme("Missing Rows 2"))
+    expect_snapshot(runme("everything"))
+    expect_snapshot(runme("everything 2"))
+    expect_snapshot(runme("Missing Vs NA"))
+
+    expect_snapshot(
+        print(
+            diffdf(
+                list_of_comparisons[["everything"]][[1]],
+                list_of_comparisons[["everything"]][[2]],
+                keys = "ID",
+                suppress_warnings = TRUE
+            )
+        )
+    )
+
+    expect_snapshot(
+        print(
+            diffdf(
+                list_of_comparisons[["everything"]][[1]],
+                list_of_comparisons[["everything"]][[2]],
+                keys = c("ID", "GROUP1"),
+                suppress_warnings = TRUE
+            )
+        )
+    )
+})
 
 
+test_that("row_limit works as expected", {
+    diff <- diffdf(
+        data.frame(col1 = LETTERS, col2 = 1:26),
+        data.frame(col1 = LETTERS, col2 = 21:46),
+        keys = "col1",
+        suppress_warnings = TRUE
+    )
+    output <- print(diff, as_string = TRUE)
+    output_5 <- print(diff, as_string = TRUE, row_limit = 5)
+    output_10 <- print(diff, as_string = TRUE, row_limit = 10)
+    output_15 <- print(diff, as_string = TRUE, row_limit = 15)
+    output_26 <- print(diff, as_string = TRUE, row_limit = 26)
+    output_99 <- print(diff, as_string = TRUE, row_limit = 99)
+    output_null <- print(diff, as_string = TRUE, row_limit = NULL)
 
+    expect_equal(output, output_10)
+    expect_equal(output_26, output_99)
+    expect_equal(output_26, output_null)
 
+    # +16 for the difference in the number of rows
+    # -1 for the lack of "x of y rows displayed"
+    expect_equal(length(output_10) + 16 - 1, length(output_26))
+    expect_equal(length(output_10) - 5, length(output_5))
+    expect_equal(length(output_10) + 5, length(output_15))
+})
 
+test_that("print.diffdf errors when given bad inputs", {
+    diff <- diffdf(
+        data.frame(col1 = LETTERS, col2 = 1:26),
+        data.frame(col1 = LETTERS, col2 = 21:46),
+        keys = "col1",
+        suppress_warnings = TRUE
+    )
+    expect_error(
+        print(diff, row_limit = 0),
+        "row_limit must be a positive integer"
 
+    )
+    expect_error(
+        print(diff, row_limit = "String"),
+        "row_limit must be a positive integer"
 
+    )
+    expect_error(
+        print(diff, row_limit = NA),
+        "row_limit must be a positive integer"
 
+    )
+    expect_error(
+        print(diff, row_limit = c(1, 2)),
+        "row_limit must be a positive integer"
 
+    )
 
+    expect_error(
+        print(diff, as_string = "String"),
 
-
-# i <- 3
-# print_tests[[i]]
-# RES[[i]] %>% cat(sep = "\n")
-# TESTING_print_msg[[i]] %>% cat(sep = "\n")
-# 
-# diffdf(
-#  print_tests[[i]][[1]],
-#  print_tests[[i]][[2]]
-# )
-# 
-# for ( i in 1:length(RES)){
-#     sink( paste0("./utils/print_output/output_",i,".txt"))
-#     RES[[i]] %>% cat(sep = "\n")
-#     sink()
-# 
-#     # sink( paste0("./utils/print_output/output_",i,"_gold.txt"))
-#     # TESTING_print_msg[[i]] %>% cat(sep = "\n")
-#     # sink()
-# }
-
+    )
+    expect_error(
+        print(diff, as_string = c(TRUE, TRUE)),
+    )
+})
