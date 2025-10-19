@@ -113,8 +113,15 @@ diffdf <- function(
     class(COMPARE) <- c("diffdf", "list")
 
 
-    BASE_NAME <- deparse(substitute(base))
-    COMP_NAME <- deparse(substitute(compare))
+    BASE_NAME <- deparse(substitute(base), width.cutoff = 30L)
+    if (length(BASE_NAME) > 1) {
+        BASE_NAME <- "<BASE>"
+    }
+    COMP_NAME <- deparse(substitute(compare), width.cutoff = 30L)
+    if (length(COMP_NAME) > 1) {
+        COMP_NAME <- "<COMPARE>"
+    }
+
     COMPARE[["DataSummary"]] <- construct_issue(
         value = describe_dataframe(BASE, COMP, BASE_NAME, COMP_NAME),
         message = "Summary of BASE and COMPARE"
@@ -370,24 +377,7 @@ diffdf <- function(
 
 
     if (!is.null(file)) {
-        x <- print(COMPARE, as_string = TRUE)
-
-        tryCatch(
-            {
-                sink(file)
-                cat(x, sep = "\n")
-                sink()
-            },
-            warning = function(w) {
-                sink()
-                warning(w)
-            },
-            error = function(e) {
-                sink()
-                stop(e)
-            }
-        )
-        return(invisible(COMPARE))
+        print(COMPARE, file = file)
     }
 
     return(COMPARE)
@@ -415,7 +405,7 @@ diffdf <- function(
 #' @export
 diffdf_has_issues <- function(x) {
     if (class(x)[[1]] != "diffdf") stop("x is not an diffdf object")
-    return(length(x) != 0)
+    length(x) != 0
 }
 
 

@@ -85,9 +85,9 @@ diff <- diffdf(iris, iris2, suppress_warnings = TRUE)
 diffdf_has_issues(diff)
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  if (diffdf_has_issues(diff)) {
-#      #<Further programming steps / logic>
-#  }
+# if (diffdf_has_issues(diff)) {
+#     #<Further programming steps / logic>
+# }
 
 ## -----------------------------------------------------------------------------
 dsin1 <- data.frame(x = 1.1e-06)
